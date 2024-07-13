@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>news app</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial;
+    }
+    .heading{
+        background-color: red;
+        color: white;
+        /* text-align: center; */
+        letter-spacing: 1px;
+        font-weight: bold;
+        text-transform: capitalize;
+        font-size: 2.5vw;
+        padding: 1.5vw;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .heading p{
+        display: inline-block;
+    }
+    .heading input{
+        flex: 1;
+        margin-left: 5vw;
+        text-transform: capitalize;
+        outline: none;
+        padding: 0.5vw;
+        border-radius: 6px;
+        border: none;
+    }
+    .navbar{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        /* background-color: aqua; */
+        margin: 1vw;
+    }
+    .navbar ul{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        
+    }
+    .navbar li {
+        list-style: none;
+        margin: 1.5vw;
+        text-transform: capitalize;
+        background-color: #d3d3d3;
+        padding:0.8vw;
+        border-radius:3px;
+    }
+    .news-container{
+        /* background-color: bisque; */
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        row-gap: 2vw;
+        column-gap:0.6vw;
+        width: 90%;
+        padding: 1vw;
+        margin: 0 auto;
+        /* margin-left: 10px; */
+    }
+    .card{
+        /* background-color: aquamarine; */
+        border-radius: 3px;
+        padding: 1.5vw;
+        position: relative;
+        width: 350px;
+        box-shadow: 3px 3px 5px 2px rgba(85,85,85,1);
+        /* height:350px; */
+    }
+    .card img {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 1vw;
+      border-radius: 3px;
+    }
+    .card h2{
+        font-size: 1vw;
+        width: 100%;
+        /* background-color: red; */
+        text-transform: capitalize;
+        padding:0.6vw;
+    }
+    .card p{
+        text-transform: capitalize;
+        padding: 0.6vw;
+        font-size: 10px;
+        line-height: 16px;
+    }
+    .search{
+        text-transform: capitalize;
+        color:red;
+        background-color:white;
+        padding: 0.5vw;
+        margin: 1vw;
+        border: none;
+        border-radius: 2px;
+        letter-spacing: 1px;
+    }
+    .card button{
+       text-transform: capitalize;
+       padding: 0.4vw;
+       background-color: red;
+       color: white;
+       position: absolute;
+       right: 10px;
+       bottom: 11px;
+       outline: none;
+       border: none;
+       font-weight: bold;
+       border-radius: 3px;
+       margin: 0.5vw;
+       
+    }
+</style>
+<body>
+    <div class="heading">
+        <p>news website</p>
+        <input type="text" placeholder="enter news to saerch..." id="value" >
+        <button class="search" id="btn">search</button>
+    </div>
+    <div class="navbar">
+        <ul>
+            <li >general</li>
+            <li>entertainment</li>
+            <li>health</li>
+            <li >science</li>
+            <li>sports</li>
+            <li>technology</li>
+        </ul>
+    </div>
+    <div class="news-container">
+     </div>
+    </div>
+    <script>
+        let apikey=`82a2e2d17da446aab9d981e96cff1011`;
+        let input=document.querySelector("#value");
+        let newcontainer=document.querySelector(".news-container");
+        let btn=document.querySelector("#btn")
+        const getnews=async(query)=>{
+            const data=await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=${apikey}`);
+            const realdata=await data.json();
+            console.log(realdata);
+            newcontainer.innerHTML=""
+            realdata.articles.forEach(element => {
+            newcontainer.innerHTML+=` <div class='card'>
+            <img src="${element.urlToImage}">
+            <h2>${element.title}</h2>
+            <p>${element.description}</p>
+            <button class="button" >read more</button>
+            </div>`;
+            let button=document.querySelector(".button")
+            button.addEventListener("click",()=>{
+                let link=`${element.url}`;
+                window.open(link)
+            })
+            
+            });
+        }
+        btn.addEventListener("click",()=>{
+            let userinput=input.value;
+            console.log(userinput)
+            getnews(userinput);
+        });
+       window.addEventListener("load",function(){
+          getnews("india");
+       })
+
+    
+    </script>
+</body>
+</html>
